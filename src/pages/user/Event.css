@@ -1,0 +1,11 @@
+.fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .event-details img {
+    border: 2px solid #e2e8f0; /* Light border for images */
+  }
+  
