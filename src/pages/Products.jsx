@@ -211,15 +211,32 @@ const Products = () => {
 
   const addToCart = (id) => {
     verifyAuthBeforeAction(() => {
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+  
+      // Check if the product is already in the cart
+      const productIndex = savedCart.findIndex((item) => item.productId === id);
+  
+      if (productIndex >= 0) {
+        // If product exists, increase its quantity
+        savedCart[productIndex].quantity += 1;
+      } else {
+        // If product doesn't exist, add it to the cart
+        savedCart.push({ productId: id, quantity: 1 });
+      }
+  
+      // Update localStorage with the new cart
+      localStorage.setItem("cart", JSON.stringify(savedCart));
+  
+      // Optionally call API to sync backend
       const data = new FormData();
       data.append("products", id);
       data.append("user", user._id);
       data.append("quantity", 1);
-
+  
       addToCartApi(data)
         .then((res) => {
           if (res.data.success) {
-            toast.success(res.data.message);
+            toast.success("Product added to cart!");
           } else {
             toast.error(res.data.message);
           }
@@ -227,6 +244,7 @@ const Products = () => {
         .catch((err) => toast.error(err.message));
     });
   };
+  
 
   return (
     <div className="bg-gradient-to-r from-gray-100 to-gray-200 min-h-screen py-12">

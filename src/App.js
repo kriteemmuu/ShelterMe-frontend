@@ -50,7 +50,7 @@ function App() {
   return (
     <Router>
       <ToastContainer />
-      {user?.isAdmin ? null : <Navbar />}
+      {user?.isAdmin ? <Navbar /> : <Navbar />}
 
       <Routes>
       <Route
@@ -90,7 +90,7 @@ function App() {
         <Route path="/story" element={<StorySlider/>}/>
         <Route path="/donar" element={<Donar/>}/>
       </Routes>
-      {user?.isAdmin ? null : <Footers />}
+      {user?.isAdmin ? <Footers /> : <Footers />}
     </Router>
   );
 }

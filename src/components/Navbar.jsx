@@ -402,7 +402,7 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import LoginModal from "../pages/Login";
 import RegisterModal from "../pages/Register";
@@ -425,10 +425,16 @@ function classNames(...classes) {
 export default function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  // const [cartCount, setCartCount] = useState(() => {
-  //   const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-  //   return savedCart.length;
-  // });
+  const [cartCount, setCartCount] = useState(() => {
+    // Initialize cartCount from localStorage
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    return savedCart.reduce((total, item) => total + item.quantity, 0);
+  }); 
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const initialCartCount = savedCart.reduce((total, item) => total + item.quantity, 0);
+    setCartCount(initialCartCount);
+  }, []);
 
   const logout = (e) => {
     e.preventDefault();
@@ -501,7 +507,7 @@ export default function Navbar() {
                   className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full"
                   style={{ fontSize: "12px" }}
                 >
-                  {/* {cartCount} */}0
+                  {cartCount}
                 </span>
               </Link>
 
